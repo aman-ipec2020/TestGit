@@ -1,0 +1,77 @@
+public class MainApp3 {
+
+	private static Participants supervisor1 = new Participants("supervisor101");
+	private static Participants supervisor2 = new Participants("supervisor102");
+	private static Participants supervisor3 = new Participants("supervisor103");
+		
+	public static void main(String[] args) {
+
+		supervisor1_network();
+		supervisor3_network();
+		supervisor2_network();
+		
+		System.out.println("\t Participant : " + supervisor1.getName());
+			System.out.println(supervisor1.getBlockchain());
+		System.out.println("\t Participant : " + supervisor2.getName());
+			System.out.println(supervisor2.getBlockchain());
+		System.out.println("\t Participant : " + supervisor3.getName());	
+			System.out.println(supervisor3.getBlockchain());
+	}
+	
+	public static void supervisor1_network()	{
+		supervisor1.subscribe(supervisor2);
+		supervisor1.subscribe(supervisor3);
+		
+		EvaluatedUserFeedbackRepo repo = new EvaluatedUserFeedbackRepo();
+			Data report = new Data();
+			report.setEmployeeID("emp-101");
+			report.setEmployeeName("Aman");
+			report.setToiletID("toilet-1011");
+			report.setDataSize("3");
+			report.setIssuesDateAndTime("15-Jan-2020, 3:40 p.m.");
+			report.setToiletStatus("usable");
+	//		report.setUserFeedbackList(feedbackList.getUserFeedbackList());
+			report.setReportList(repo.getEvaluatedUserFeedbacks());
+			report.setAPI("http://192.168.43.95:8081/ReportHandler/resources/getUserFeedbacks");
+			
+		supervisor1.notifyAllEntities(supervisor1.getBlockchain().newBlock(1, new Header(10,7,3,"17-Jan-2020,14:00","4:00",supervisor1.getName()), report));
+	}
+	
+	public static void supervisor2_network()	{
+		supervisor2.subscribe(supervisor1);
+		supervisor2.subscribe(supervisor3);
+		
+		EvaluatedUserFeedbackRepo repo = new EvaluatedUserFeedbackRepo();
+			Data report = new Data();
+			report.setEmployeeID("emp-101");
+			report.setEmployeeName("Aman");
+			report.setToiletID("toilet-1011");
+			report.setDataSize("3");
+			report.setIssuesDateAndTime("15-Jan-2020, 3:40 p.m.");
+			report.setToiletStatus("usable");
+	//		report.setUserFeedbackList(feedbackList.getUserFeedbackList());
+			report.setReportList(repo.getEvaluatedUserFeedbacks());
+			report.setAPI("http://192.168.43.95:8081/ReportHandler/resources/getUserFeedbacks");
+		
+		supervisor2.notifyAllEntities(supervisor1.getBlockchain().newBlock(2,new Header(10,6,4,"18-Jan-2020,12:00","3:00",supervisor2.getName()), report));
+	}
+	
+	public static void supervisor3_network()	{
+		supervisor3.subscribe(supervisor1);
+		supervisor3.subscribe(supervisor2);
+		
+		EvaluatedUserFeedbackRepo repo = new EvaluatedUserFeedbackRepo();
+			Data report = new Data();
+			report.setEmployeeID("emp-101");
+			report.setEmployeeName("Aman");
+			report.setToiletID("toilet-1011");
+			report.setDataSize("3");
+			report.setIssuesDateAndTime("15-Jan-2020, 3:40 p.m.");
+			report.setToiletStatus("usable");
+	//		report.setUserFeedbackList(feedbackList.getUserFeedbackList());
+			report.setReportList(repo.getEvaluatedUserFeedbacks());
+			report.setAPI("http://192.168.43.95:8081/ReportHandler/resources/getUserFeedbacks");
+		
+		supervisor3.notifyAllEntities(supervisor1.getBlockchain().newBlock(3,new Header(10,8,2,"19-Jan-2020,14:30","3:44",supervisor3.getName()), report));
+	}
+}
